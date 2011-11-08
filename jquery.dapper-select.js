@@ -5,6 +5,7 @@
         return this.each(function() {
           var currentSelected, selectBoxHeight, selectBoxSpan, selectBoxSpanInner, selectBoxWidth;
           currentSelected = $(this).find(':selected');
+          /* If the function is rebinded, remove any previous spans */
           $(this).parent().find('span.dapper-select').remove();
           $(this).after('<span class="dapper-select"><span class="dapper-select-inner">' + currentSelected.text() + '</span></span>').css({
             position: 'absolute',
@@ -22,8 +23,15 @@
             display: 'inline-block'
           });
           selectBoxHeight = parseInt(selectBoxSpan.height()) + parseInt(selectBoxSpan.css('padding-top')) + parseInt(selectBoxSpan.css('padding-bottom'));
-          return $(this).height(selectBoxHeight).bind('change', function() {
+          $(this).height(selectBoxHeight).bind('change', function() {
             return selectBoxSpanInner.text($(this).find(':selected').text()).parent().addClass('changed');
+          });
+          /* Improve Form usability, show combo on :focus */
+          $(this).focus(function() {
+            return $(this).css('opacity', 1);
+          });
+          return $(this).blur(function() {
+            return $(this).css('opacity', 0);
           });
         });
       }
